@@ -6,10 +6,10 @@ MAINTAINER Sven Nierlein "sven@consol.de"
 ENV REFRESHED_AT 2023-01-27
 
 LABEL io.k8s.description="Headless VNC Container with Xfce window manager, firefox and chromium" \
-      io.k8s.display-name="Headless VNC Container based on Debian" \
-      io.openshift.expose-services="6901:http,5901:xvnc" \
-      io.openshift.tags="vnc, debian, xfce" \
-      io.openshift.non-scalable=true
+    io.k8s.display-name="Headless VNC Container based on Debian" \
+    io.openshift.expose-services="6901:http,5901:xvnc" \
+    io.openshift.tags="vnc, debian, xfce" \
+    io.openshift.non-scalable=true
 
 ## Connection ports for controlling the UI:
 # VNC port:5901
@@ -32,6 +32,15 @@ ENV HOME=/headless \
     VNC_VIEW_ONLY=false
 WORKDIR $HOME
 
+ARG UNAME=easy_vault
+ARG UID=1000
+ARG GID=1000
+RUN groupadd -g $GID -o $UNAME
+RUN useradd -m -u $UID -g $GID -o -s /bin/bash $UNAME -d $HOME
+
+# Add user to sudoers
+RUN apt-get update && apt-get install -y sudo && echo "$UNAME ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
 ### Add all install scripts for further steps
 ADD ./src/common/install/ $INST_SCRIPTS/
 ADD ./src/debian/install/ $INST_SCRIPTS/
@@ -49,7 +58,6 @@ RUN $INST_SCRIPTS/no_vnc.sh
 
 ### Install firefox and chrome browser
 RUN $INST_SCRIPTS/firefox.sh
-RUN $INST_SCRIPTS/chrome.sh
 
 ### Install xfce UI
 RUN $INST_SCRIPTS/xfce_ui.sh
@@ -59,6 +67,22 @@ ADD ./src/common/xfce/ $HOME/
 RUN $INST_SCRIPTS/libnss_wrapper.sh
 ADD ./src/common/scripts $STARTUPDIR
 RUN $INST_SCRIPTS/set_user_permission.sh $STARTUPDIR $HOME
+
+USER 1000
+
+### Install Elixir
+RUN $INST_SCRIPTS/elixir.sh
+RUN $INST_SCRIPTS/development_environment.sh
+
+### Install guacd
+RUN $INST_SCRIPTS/guacamole.sh
+
+### RW volume
+RUN mkdir -p $HOME/data
+
+USER 0
+
+RUN chown -R $UNAME:$UNAME $HOME
 
 USER 1000
 

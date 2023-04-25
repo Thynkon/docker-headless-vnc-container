@@ -1,0 +1,16 @@
+version: "3.3"
+services:
+  app:
+    image: easy_vault
+    build:
+      context: "."
+      dockerfile: Dockerfile.debian-xfce-vnc
+    container_name: easy_vault
+    ports:
+      - "6901:6901"
+      - "5901:5901"
+      - "4822:4822"
+    volumes:
+      - type: bind
+        source: ./data
+        target: /headless/data

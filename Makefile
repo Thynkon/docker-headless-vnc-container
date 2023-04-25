@@ -16,7 +16,7 @@ build-rocky-icewm-vnc:
 run: run-debian-xfce-vnc
 
 run-debian-xfce-vnc:
-	docker run -ti --rm -p 6901:6901 -p 5901:5901 local/debian-xfce-vnc
+	docker run -ti --rm -p 6901:6901 -p 5901:5901 -p 4822:4822 local/debian-xfce-vnc
 
 run-debian-icewm-vnc:
 	docker run -ti --rm -p 6901:6901 -p 5901:5901 local/debian-icewm-vnc
