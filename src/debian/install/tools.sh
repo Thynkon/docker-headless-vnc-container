@@ -3,7 +3,7 @@
 set -e
 
 echo "Install some common tools for further installation"
-apt-get install -y vim wget net-tools locales bzip2 procps \
+apt-get install -y build-essential vim wget net-tools locales bzip2 procps \
     python3-numpy #used for websockify/novnc
 apt-get clean -y
 

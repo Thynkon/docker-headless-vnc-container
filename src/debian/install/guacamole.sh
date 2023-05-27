@@ -4,9 +4,12 @@ set -e
 
 GUACAMOLE_VERSION=1.5.1
 
+# Install dependencies
+
 # Dependencies
-sudo apt-get install -y libcairo2-dev libjpeg62-turbo-dev libpng-dev libtool-bin uuid-dev \
-    libavcodec-dev libavformat-dev libavutil-dev libswscale-dev freerdp2-dev libpango1.0-dev libssh2-1-dev libtelnet-dev
+sudo apt-get install -y build-essential libcairo2-dev libjpeg62-turbo-dev libpng-dev libtool-bin uuid-dev \
+    libavcodec-dev libavformat-dev libavutil-dev libswscale-dev freerdp2-dev libpango1.0-dev libssh2-1-dev libtelnet-dev \
+    libvncserver-dev libwebsockets-dev  libvorbis-dev libpulse-dev libwebp-dev
 
 pushd /tmp
 

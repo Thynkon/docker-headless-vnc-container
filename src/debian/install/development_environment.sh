@@ -49,6 +49,8 @@ echo '{
   }
 }' > /headless/.config/VSCodium/User/settings.json
 
+# Allow to run on container
+# Reference: https://github.com/microsoft/vscode/issues/81056#issuecomment-532603271
 echo "alias codium='codium --no-sandbox'" >> /headless/.bashrc
 
 source /headless/.bashrc

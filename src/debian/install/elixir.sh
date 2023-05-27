@@ -7,21 +7,28 @@ ERLANG_VERSION=25.3
 ELIXIR_VERSION=1.14.4
 
 echo "Install Erlang and Elixir runtime"
-sudo apt-get install -y curl git unzip build-essential gcc libncurses5 libsctp1 libncursesw5-dev libssl-dev inotify-tools libwxgtk3.0-gtk3-0v5
+#sudo apt-get install -y curl git unzip build-essential gcc libncurses5 libsctp1 libncursesw5-dev libssl-dev inotify-tools libwxgtk3.0-gtk3-0v5 libncurses5-dev
+sudo apt-get install -y --no-install-recommends default-jdk curl git unzip build-essential gcc libncurses5 libsctp1 libncursesw5-dev libssl-dev inotify-tools libwxgtk-webview3.0-gtk3-dev libncurses5-dev unixodbc-dev
 
-pushd /tmp
+# Install ASDF
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch "v$ASDF_VERSION"
+echo '. $HOME/.asdf/asdf.sh' >>~/.bashrc
+echo '. $HOME/.asdf/completions/asdf.bash' >>~/.bashrc
+
+# Load ASDF
+. $HOME/.asdf/asdf.sh
+
+export ASDF_CONCURRENCY=$(nproc)
 
 # Install Erlang
-wget https://packages.erlang-solutions.com/erlang/debian/pool/esl-erlang_25.3-1~debian~bullseye_amd64.deb
-sudo DEBIAN_FRONTEND=noninteractive dpkg -i esl-erlang_25.3-1~debian~bullseye_amd64.deb
-rm esl-erlang_25.3-1~debian~bullseye_amd64.deb
+asdf plugin-add erlang
+asdf install erlang $ERLANG_VERSION
+asdf global erlang $ERLANG_VERSION
 
 # Install Elixir
-wget https://github.com/elixir-lang/elixir/releases/download/v1.14.4/elixir-otp-25.zip
-unzip elixir-otp-25.zip -d "elixir-1.14.4-otp-25" && sudo mv "elixir-1.14.4-otp-25" "/opt/elixir-1.14.4-otp-25"
-
-echo "export PATH=/opt/elixir-1.14.4-otp-25/bin:$PATH" >> ~/.bashrc && source ~/.bashrc
-rm /tmp/elixir-otp-25.zip && popd
+asdf plugin-add elixir
+asdf install elixir $ELIXIR_VERSION
+asdf global elixir $ELIXIR_VERSION
 
 # Install Hex
 mix local.hex --force && mix local.rebar --force

@@ -6,10 +6,10 @@ MAINTAINER Sven Nierlein "sven@consol.de"
 ENV REFRESHED_AT 2023-01-27
 
 LABEL io.k8s.description="Headless VNC Container with IceWM window manager, firefox and chromium" \
-      io.k8s.display-name="Headless VNC Container based on Debian" \
-      io.openshift.expose-services="6901:http,5901:xvnc" \
-      io.openshift.tags="vnc, debian, icewm" \
-      io.openshift.non-scalable=true
+    io.k8s.display-name="Headless VNC Container based on Debian" \
+    io.openshift.expose-services="6901:http,5901:xvnc" \
+    io.openshift.tags="vnc, debian, icewm" \
+    io.openshift.non-scalable=true
 
 ## Connection ports for controlling the UI:
 # VNC port:5901
