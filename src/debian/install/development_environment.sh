@@ -13,7 +13,7 @@ sudo apt-get update -y && sudo apt-get install -y codium
 
 # Enable VSCode marketplace
 
-mkdir -p /headless/.config/VSCodium
+mkdir -p /home/acdsn/.config/VSCodium
 
 echo '{
   "extensionsGallery": {
@@ -22,10 +22,10 @@ echo '{
     "cacheUrl": "https://vscode.blob.core.windows.net/gallery/index",
     "controlUrl": ""
   }
-}' > /headless/.config/VSCodium/product.json
+}' > /home/acdsn/.config/VSCodium/product.json
 
 # Setup config
-mkdir -p /headless/.config/VSCodium/User
+mkdir -p /home/acdsn/.config/VSCodium/User
 
 echo '{
   "window.zoomLevel": 1,
@@ -47,13 +47,13 @@ echo '{
   "files.associations": {
     "*.heex": "phoenix-heex"
   }
-}' > /headless/.config/VSCodium/User/settings.json
+}' > /home/acdsn/.config/VSCodium/User/settings.json
 
 # Allow to run on container
 # Reference: https://github.com/microsoft/vscode/issues/81056#issuecomment-532603271
-echo "alias codium='codium --no-sandbox'" >> /headless/.bashrc
+echo "alias codium='codium --no-sandbox'" >> /home/acdsn/.bashrc
 
-source /headless/.bashrc
+source /home/acdsn/.bashrc
 # Install extensions
 extensions=("JakeBecker.elixir-ls" "phoenixframework.phoenix" "vscodevim.vim")
 

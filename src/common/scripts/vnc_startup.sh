@@ -56,9 +56,6 @@ cleanup() {
 }
 trap cleanup SIGINT SIGTERM
 
-## start guacd
-/etc/init.d/guacd start
-
 ## resolve_vnc_connection
 VNC_IP=$(hostname -i)
 

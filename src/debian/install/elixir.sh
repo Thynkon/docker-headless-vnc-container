@@ -7,8 +7,9 @@ ERLANG_VERSION=25.3
 ELIXIR_VERSION=1.14.4
 
 echo "Install Erlang and Elixir runtime"
-#sudo apt-get install -y curl git unzip build-essential gcc libncurses5 libsctp1 libncursesw5-dev libssl-dev inotify-tools libwxgtk3.0-gtk3-0v5 libncurses5-dev
-sudo apt-get install -y --no-install-recommends default-jdk curl git unzip build-essential gcc libncurses5 libsctp1 libncursesw5-dev libssl-dev inotify-tools libwxgtk-webview3.0-gtk3-dev libncurses5-dev unixodbc-dev
+sudo apt-get install -y --no-install-recommends curl git unzip build-essential gcc libncurses5 libsctp1 libncursesw5-dev libssl-dev inotify-tools libwxgtk-webview3.0-gtk3-dev libncurses5-dev unixodbc-dev
+
+export KERL_CONFIGURE_OPTIONS="--without-javac --without-jinterface"
 
 # Install ASDF
 git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch "v$ASDF_VERSION"

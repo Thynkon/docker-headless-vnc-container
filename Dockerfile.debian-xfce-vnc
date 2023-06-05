@@ -7,8 +7,6 @@ ENV REFRESHED_AT 2023-01-27
 
 LABEL io.k8s.description="Headless VNC Container with Xfce window manager, firefox and chromium" \
     io.k8s.display-name="Headless VNC Container based on Debian" \
-    #io.openshift.expose-services="6901:http,5901:xvnc" \
-    #io.openshift.expose-services="6901:http,5901:xvnc" \
     io.openshift.expose-services="5901:xvnc" \
     io.openshift.tags="vnc, debian, xfce" \
     io.openshift.non-scalable=true
@@ -21,14 +19,13 @@ ENV DISPLAY=:1 \
     VNC_PORT=5901 \
     NO_VNC_PORT=6901
 EXPOSE $VNC_PORT $NO_VNC_PORT
-#EXPOSE $VNC_PORT
 
 ### Envrionment config
-ENV HOME=/headless \
+ENV HOME=/home/acdsn \
     TERM=xterm \
     STARTUPDIR=/dockerstartup \
-    INST_SCRIPTS=/headless/install \
-    NO_VNC_HOME=/headless/noVNC \
+    INST_SCRIPTS=/home/acdsn/install \
+    NO_VNC_HOME=/home/acdsn/noVNC \
     DEBIAN_FRONTEND=noninteractive \
     VNC_COL_DEPTH=24 \
     VNC_RESOLUTION=1280x1024 \
@@ -36,20 +33,20 @@ ENV HOME=/headless \
     VNC_VIEW_ONLY=false
 WORKDIR $HOME
 
-ARG UNAME=easy_vault
-#ARG UID=1000
+ARG UNAME=acdsn
 ARG UID=1001
-#ARG GID=1000
 ARG GID=1001
 RUN groupadd -g $GID -o $UNAME
 RUN useradd -m -u $UID -g $GID -o -s /bin/bash $UNAME -d $HOME
 
 # Add user to sudoers
-RUN apt-get update && apt-get install -y sudo && echo "$UNAME ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+RUN apt-get clean && apt-get update && apt-get install -y sudo && echo "$UNAME ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 ### Add all install scripts for further steps
 ADD ./src/common/install/ $INST_SCRIPTS/
 ADD ./src/debian/install/ $INST_SCRIPTS/
+
+RUN dpkg --configure -a
 
 ### Install some common tools
 RUN $INST_SCRIPTS/tools.sh
@@ -74,17 +71,8 @@ RUN $INST_SCRIPTS/libnss_wrapper.sh
 ADD ./src/common/scripts $STARTUPDIR
 RUN $INST_SCRIPTS/set_user_permission.sh $STARTUPDIR $HOME
 
-USER $UID
-
-### Install Elixir
-#RUN $INST_SCRIPTS/elixir.sh
-#RUN $INST_SCRIPTS/development_environment.sh
-
-### Install guacd
-#RUN $INST_SCRIPTS/guacamole.sh
-
 ### RW volume
-RUN mkdir -p $HOME/data
+RUN mkdir -p $HOME/volume
 
 USER 0
 
